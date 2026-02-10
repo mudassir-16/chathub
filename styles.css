@@ -26,6 +26,7 @@ body {
         radial-gradient(circle at 100% 100%, rgba(172, 191, 164, 0.05) 0%, transparent 50%);
     color: var(--accent);
     min-height: 100vh;
+    overflow-x: hidden;
 }
 
 /* Base Glassmorphism */
@@ -152,4 +153,43 @@ h3,
     border: 1px solid rgba(226, 232, 206, 0.15);
     border-radius: 16px;
     box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 640px) {
+    .glass-card {
+        padding: 24px !important;
+        border-radius: 20px;
+    }
+
+    h1 {
+        font-size: 2.5rem !important;
+    }
+
+    .btn-primary {
+        padding: 14px 20px;
+        font-size: 14px;
+    }
+
+    .glass-header .max-w-4xl {
+        padding-left: 16px !important;
+        padding-right: 16px !important;
+    }
+
+    main {
+        padding-left: 16px !important;
+        padding-right: 16px !important;
+        padding-top: 32px !important;
+    }
+
+    .confession-card {
+        padding: 20px;
+    }
+}
+
+/* Touch Device Optimizations */
+@media (hover: none) {
+    .glass-card:hover {
+        transform: none;
+    }
 }

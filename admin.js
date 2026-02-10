@@ -43,8 +43,22 @@ async function initAdmin() {
     });
 }
 
+// Sidebar Toggle for Mobile
+function toggleSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    if (sidebar.classList.contains('-translate-x-full')) {
+        sidebar.classList.remove('-translate-x-full');
+    } else {
+        sidebar.classList.add('-translate-x-full');
+    }
+}
+
 // Section Management
 function showSection(sectionId) {
+    // Auto-close sidebar on mobile after selection
+    if (window.innerWidth < 1024) {
+        toggleSidebar();
+    }
     // Selection for minimal sidebar
     document.querySelectorAll('.nav-btn').forEach(l => l.classList.remove('active-nav'));
 

@@ -38,7 +38,7 @@
                 <p class="text-muted text-sm font-medium">Join the minimal community</p>
             </div>
 
-            <div class="glass-card p-10 border-white/[0.1] shadow-2xl">
+            <div class="glass-card p-6 md:p-10 border-white/[0.1] shadow-2xl">
                 <div id="loginForm">
                     <div class="space-y-5 mb-8">
                         <div class="space-y-2">
@@ -85,8 +85,8 @@
     </div>
 
     <!-- Identity Screen -->
-    <div id="usernameScreen" class="hidden min-h-screen flex items-center justify-center p-6 bg-[#262626]">
-        <div class="max-w-md w-full glass-card p-12 border-white/[0.1] text-center animate-in">
+    <div id="usernameScreen" class="hidden min-h-screen flex items-center justify-center p-4 md:p-6 bg-[#262626]">
+        <div class="max-w-md w-full glass-card p-8 md:p-12 border-white/[0.1] text-center animate-in">
             <h2 class="text-3xl font-extrabold font-['Outfit'] mb-3">Set Identity</h2>
             <p class="text-muted text-sm mb-10 font-medium">Pick a unique name for the feed</p>
             <div class="relative mb-8">
@@ -127,17 +127,17 @@
             </div>
         </header>
 
-        <main class="max-w-2xl mx-auto px-6 py-12">
+        <main class="max-w-2xl mx-auto px-4 md:px-6 py-8 md:py-12">
             <!-- Composer Mini -->
-            <div class="glass-card p-6 border-white/[0.08] mb-12 flex items-center gap-4 cursor-pointer hover:border-white/[0.15] transition-all"
+            <div class="glass-card p-4 md:p-6 border-white/[0.08] mb-8 md:mb-12 flex items-center gap-4 cursor-pointer hover:border-white/[0.15] transition-all"
                 onclick="openPostModal()">
                 <div
                     class="w-10 h-10 rounded-full bg-white/[0.05] border border-white/[0.1] flex items-center justify-center text-[#FF7F11] font-bold">
                     +
                 </div>
-                <span class="text-muted font-medium">What's happening?</span>
+                <span class="text-muted font-medium text-sm md:text-base">What's happening?</span>
                 <div
-                    class="ml-auto px-4 py-2 rounded-lg glass-base text-[10px] font-black uppercase text-[#ACBFA4] tracking-widest">
+                    class="ml-auto px-3 md:px-4 py-2 rounded-lg glass-base text-[10px] font-black uppercase text-[#ACBFA4] tracking-widest">
                     Share</div>
             </div>
 
@@ -165,8 +165,8 @@
 
     <!-- Minimal Composer Modal -->
     <div id="postModal"
-        class="hidden fixed inset-0 bg-black/90 backdrop-blur-xl z-[60] flex items-center justify-center p-6">
-        <div class="max-w-xl w-full glass-card p-8 border-white/[0.1] animate-in">
+        class="hidden fixed inset-0 bg-black/90 backdrop-blur-xl z-[60] flex items-center justify-center p-4 md:p-6">
+        <div class="max-w-xl w-full glass-card p-6 md:p-8 border-white/[0.1] animate-in">
             <div class="flex items-center justify-between mb-8">
                 <div
                     class="px-3 py-1 bg-[#FF7F11]/10 border border-[#FF7F11]/20 rounded-md text-[9px] font-black uppercase text-[#FF7F11] tracking-widest">
@@ -189,7 +189,7 @@
         </div>
     </div>
 
-    <div id="toast" class="hidden fixed bottom-10 right-10 px-6 py-4 z-[100] animate-in">
+    <div id="toast" class="hidden fixed bottom-6 right-6 md:bottom-10 md:right-10 px-6 py-4 z-[100] animate-in">
         <p id="toastMessage" class="text-xs font-bold text-[#E2E8CE] tracking-medium uppercase italic"></p>
     </div>
 
