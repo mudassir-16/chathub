@@ -111,15 +111,7 @@ async function emailSignup() {
     }
 }
 
-async function googleLogin() {
-    const provider = new firebase.auth.GoogleAuthProvider();
-    try {
-        await window.auth.signInWithPopup(provider);
-        showToast('Login successful!', 'success');
-    } catch (error) {
-        showToast(error.message, 'error');
-    }
-}
+
 
 async function logout() {
     try {
