@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | ChatHub Admin</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .nav-btn.active-nav {
+            background: rgba(255, 127, 17, 0.08);
+            color: #FF7F11;
+            border-right: 2px solid #FF7F11;
+        }
+    </style>
+</head>
+
+<body class="bg-[#262626] text-[#E2E8CE] font-['Inter']">
+    <!-- Auth Shield -->
+    <div id="loadingOverlay" class="fixed inset-0 bg-[#262626] z-[100] flex items-center justify-center">
+        <div class="text-center animate-in">
+            <div
+                class="inline-block animate-spin rounded-full h-10 w-10 border-2 border-[#FF7F11] border-t-transparent mb-4">
+            </div>
+            <p class="text-[10px] font-black uppercase tracking-[0.2em] text-[#ACBFA4]">Authenticating</p>
+        </div>
+    </div>
+
+    <div class="flex min-h-screen">
+        <!-- Sidebar Shell -->
+        <aside class="w-72 bg-black/20 border-r border-white/[0.05] flex flex-col pt-12">
+            <div class="px-10 mb-16 flex items-center gap-3">
+                <div class="w-8 h-8 rounded-lg glass-base flex items-center justify-center text-[#FF7F11]">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z">
+                        </path>
+                    </svg>
+                </div>
+                <h1 class="text-lg font-black font-['Outfit'] tracking-tighter">Admin Portal</h1>
+            </div>
+
+            <nav class="flex-1 space-y-1">
+                <button onclick="showSection('overview')"
+                    class="nav-btn w-full px-10 py-5 flex items-center gap-4 text-xs font-bold uppercase tracking-widest text-muted hover:text-white transition-all text-left">
+                    Overview
+                </button>
+                <button onclick="showSection('messages')"
+                    class="nav-btn w-full px-10 py-5 flex items-center gap-4 text-xs font-bold uppercase tracking-widest text-muted hover:text-white transition-all text-left">
+                    Moderation
+                </button>
+                <button onclick="showSection('reports')"
+                    class="nav-btn w-full px-10 py-5 flex items-center gap-4 text-xs font-bold uppercase tracking-widest text-muted hover:text-white transition-all text-left">
+                    Reports
+                    <span id="badgeReports"
+                        class="hidden ml-auto px-2 py-0.5 bg-[#FF7F11]/20 text-[#FF7F11] rounded text-[8px] font-black">0</span>
+                </button>
+                <button onclick="showSection('users')"
+                    class="nav-btn w-full px-10 py-5 flex items-center gap-4 text-xs font-bold uppercase tracking-widest text-muted hover:text-white transition-all text-left">
+                    User Management
+                </button>
+            </nav>
+
+            <div class="p-10 space-y-4">
+                <a href="index.html"
+                    class="flex items-center gap-2 text-[10px] font-bold text-[#ACBFA4] uppercase tracking-widest hover:text-[#FF7F11] transition-all">
+                    View Live App →
+                </a>
+                <button onclick="adminLogout()"
+                    class="text-[10px] font-black uppercase tracking-widest text-red-400 opacity-60 hover:opacity-100 transition-all">Sign
+                    Out</button>
+            </div>
+        </aside>
+
+        <!-- Dynamic Content -->
+        <main class="flex-1 p-16 animate-in">
+            <header class="mb-16 flex justify-between items-start">
+                <div>
+                    <h2 id="sectionTitle" class="text-4xl font-extrabold font-['Outfit'] tracking-tight mb-2">Metrics
+                    </h2>
+                    <p id="sectionSub" class="text-sm font-medium text-muted">Platform performance at a glance</p>
+                </div>
+                <div class="px-4 py-2 glass-base rounded-xl flex items-center gap-3">
+                    <span class="w-2 h-2 rounded-full bg-[#ACBFA4] animate-pulse"></span>
+                    <span class="text-[10px] font-black uppercase tracking-widest text-[#ACBFA4]">Operational</span>
+                </div>
+            </header>
+
+            <!-- Dashboard View -->
+            <div id="overviewSection" class="section-view">
+                <div class="grid grid-cols-3 gap-8 mb-16">
+                    <div class="glass-card p-10 border-white/[0.08]">
+                        <p class="text-[10px] font-black uppercase tracking-widest text-muted mb-4 text-[#ACBFA4]">Live
+                            Feed</p>
+                        <p id="totalMessages"
+                            class="text-5xl font-black font-['Outfit'] text-[#FF7F11] tracking-tighter">...</p>
+                    </div>
+                    <div class="glass-card p-10 border-white/[0.08]">
+                        <p class="text-[10px] font-black uppercase tracking-widest text-muted mb-4 text-[#ACBFA4]">
+                            Active Flags</p>
+                        <p id="totalReports" class="text-5xl font-black font-['Outfit'] text-red-400 tracking-tighter">
+                            ...</p>
+                    </div>
+                    <div class="glass-card p-10 border-white/[0.08]">
+                        <p class="text-[10px] font-black uppercase tracking-widest text-muted mb-4 text-[#ACBFA4]">Total
+                            Accounts</p>
+                        <p id="totalUsers" class="text-5xl font-black font-['Outfit'] text-[#E2E8CE] tracking-tighter">
+                            ...</p>
+                    </div>
+                </div>
+
+                <div class="glass-card border-white/[0.08] overflow-hidden">
+                    <div
+                        class="px-10 py-6 border-b border-white/[0.05] flex justify-between items-center bg-white/[0.01]">
+                        <h3 class="text-xs font-black uppercase tracking-widest text-[#FF7F11]">Recent Activity Logs
+                        </h3>
+                        <button onclick="loadAllStats()"
+                            class="text-[10px] font-bold text-muted uppercase tracking-widest hover:text-white">Refresh</button>
+                    </div>
+                    <div id="systemLogs" class="p-10 space-y-6">
+                        <p class="text-center text-xs text-muted font-medium italic">Scanning logs...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Messages View -->
+            <div id="messagesSection" class="section-view hidden">
+                <div class="glass-card border-white/[0.08] overflow-hidden">
+                    <div class="px-10 py-8 border-b border-white/[0.05] flex items-center gap-6">
+                        <input type="text" id="messageSearch" placeholder="Filter content..."
+                            class="bg-transparent border-none focus:ring-0 text-sm font-medium text-white placeholder:text-gray-700 flex-1">
+                        <div class="flex gap-4">
+                            <button onclick="loadAdminMessages('latest')"
+                                class="text-[10px] font-black uppercase tracking-widest text-[#FF7F11]">Newest</button>
+                            <button onclick="loadAdminMessages('trending')"
+                                class="text-[10px] font-black uppercase tracking-widest text-muted">Hot</button>
+                        </div>
+                    </div>
+                    <div id="adminMessageFeed" class="divide-y divide-white/[0.03]"></div>
+                </div>
+            </div>
+
+            <!-- Reports View -->
+            <div id="reportsSection" class="section-view hidden">
+                <div id="reportsListContainer" class="grid grid-cols-2 gap-8"></div>
+            </div>
+
+            <!-- Users View -->
+            <div id="usersSection" class="section-view hidden">
+                <div class="glass-card border-white/[0.08] overflow-hidden">
+                    <table class="w-full text-left">
+                        <thead class="bg-white/[0.02] border-b border-white/[0.05]">
+                            <tr>
+                                <th class="px-10 py-6 text-[10px] font-black uppercase tracking-widest text-muted">
+                                    Identity</th>
+                                <th class="px-10 py-6 text-[10px] font-black uppercase tracking-widest text-muted">
+                                    Privileges</th>
+                                <th class="px-10 py-6 text-[10px] font-black uppercase tracking-widest text-muted">
+                                    Created</th>
+                                <th
+                                    class="px-10 py-6 text-[10px] font-black uppercase tracking-widest text-muted text-right">
+                                    Settings</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminUsersTable" class="divide-y divide-white/[0.03]"></tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Minimal Toast -->
+    <div id="adminToast" class="hidden fixed bottom-12 right-12 z-[200] animate-in">
+        <div class="px-8 py-4 glass-card border-[#FF7F11]/30">
+            <p id="adminToastMsg" class="text-xs font-black uppercase tracking-widest text-[#FF7F11]"></p>
+        </div>
+    </div>
+
+    <script src="config.js"></script>
+    <script src="admin.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,155 @@
+/* Minimal & Classy Glassmorphism - Earth Palette */
+:root {
+    --primary: #FF7F11;
+    --secondary: #ACBFA4;
+    --accent: #E2E8CE;
+    --bg-dark: #262626;
+
+    /* Optimized Glass Variables */
+    --glass-white: rgba(226, 232, 206, 0.03);
+    --glass-border: rgba(226, 232, 206, 0.08);
+    --glass-blur: blur(12px);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-dark);
+    background-image:
+        radial-gradient(circle at 0% 0%, rgba(255, 127, 17, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 100% 100%, rgba(172, 191, 164, 0.05) 0%, transparent 50%);
+    color: var(--accent);
+    min-height: 100vh;
+}
+
+/* Base Glassmorphism */
+.glass-base {
+    background: var(--glass-white);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+}
+
+.glass-card {
+    background: rgba(226, 232, 206, 0.04);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(226, 232, 206, 0.08);
+    border-radius: 24px;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-card:hover {
+    background: rgba(226, 232, 206, 0.06);
+    border-color: rgba(226, 232, 206, 0.15);
+    transform: translateY(-2px);
+}
+
+/* Glass Header */
+.glass-header {
+    background: rgba(38, 38, 38, 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--glass-border);
+}
+
+/* Typography */
+h1,
+h2,
+h3,
+.font-heading {
+    font-family: 'Outfit', sans-serif;
+    letter-spacing: -0.02em;
+}
+
+.text-muted {
+    color: rgba(226, 232, 206, 0.5);
+}
+
+/* Elements */
+.btn-primary {
+    background: var(--primary);
+    color: #262626;
+    font-weight: 700;
+    padding: 12px 24px;
+    border-radius: 14px;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-primary:hover {
+    filter: brightness(1.1);
+    transform: scale(1.02);
+    box-shadow: 0 10px 25px -5px rgba(255, 127, 17, 0.4);
+}
+
+/* Minimal Scrollbar */
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(226, 232, 206, 0.1);
+    border-radius: 20px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--primary);
+}
+
+/* Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-in {
+    animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Feed Specifics */
+.confession-card {
+    background: rgba(226, 232, 206, 0.02);
+    border: 1px solid rgba(226, 232, 206, 0.08);
+    padding: 24px;
+    border-radius: 20px;
+    margin-bottom: 16px;
+}
+
+.category-badge {
+    background: rgba(255, 127, 17, 0.08);
+    color: var(--primary);
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 4px 10px;
+    border-radius: 6px;
+}
+
+/* Toast with Glass Effect */
+#toast {
+    background: rgba(38, 38, 38, 0.9);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(226, 232, 206, 0.15);
+    border-radius: 16px;
+    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5);
+}
