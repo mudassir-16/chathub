@@ -6,6 +6,7 @@
   "scripts": {
     "start": "npx http-server -p 8000 -o",
     "dev": "npx http-server -p 8000 -o",
+    "build": "node scripts/build-config.js",
     "deploy": "vercel --prod"
   },
   "keywords": [
